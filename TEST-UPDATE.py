@@ -120,6 +120,8 @@ def stack_updation():
         if stackstatus == 'CREATE_COMPLETE' or 'UPDATE_COMPLETE':
             cft_client.update_stack(StackName=STACK_NAME,
                                 TemplateBody=json_data, Parameters=stack_params)
+            waiter = ct.get_waiter('stack_update_complete')
+            LOGGER.info('{} Stack Updated'.format(STACK_NAME))
             return True
         
     except botocore.exceptions.ClientError as ex:

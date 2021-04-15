@@ -123,7 +123,6 @@ def stack_updation():
             return True
         
     except botocore.exceptions.ClientError as ex:
-        error_message = ex.response['Error']['Message']
         LOGGER.info('{} Stack does not exist'.format(STACK_NAME))
         raise
         

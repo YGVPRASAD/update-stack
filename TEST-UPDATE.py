@@ -117,7 +117,7 @@ def stack_updation():
                     StackName=STACK_NAME
             )
         stackstatus = status['Stacks'][0]['StackStatus']
-        if stackstatus == 'CREATE_COMPLETE' or 'UPDATE_COMPLETE':
+        if stackstatus == 'CREATE_COMPLETE' or 'UPDATE_COMPLETE' or 'UPDATE_ROLLBACK_COMPLETE':
             cft_client.update_stack(StackName=STACK_NAME,
                                 TemplateBody=json_data, Parameters=stack_params)
             waiter = ct.get_waiter('stack_update_complete')

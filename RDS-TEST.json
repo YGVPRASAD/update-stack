@@ -61,7 +61,8 @@
 			"Description": "RDS Deletion protection must be always set to true",
 			"Type": "String",
 			"AllowedValues": [
-				"true"
+				"true",
+				"false"
 			]
 		}
     },

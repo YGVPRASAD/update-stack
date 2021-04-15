@@ -36,6 +36,7 @@ DB_ALLOCATED_STORAGE = environ['DBAllocatedStorage']
 DB_USERNAME = environ['DBUsername']
 DB_PASSWORD = environ['DBPassword']
 DELETE_PROTECTION = environ['DeletionProtection']
+ct = boto3.client('cloudformation', STACK_REGION)
 def rds_client(resource_type, session_name):
     """
     Function to get the aws credentials
@@ -80,7 +81,7 @@ def rds_resource(resource_type, session_name):
 def _parse_template(template):
     with open(template) as template_fileobj:
         template_data = template_fileobj.read()
-    cf.validate_template(TemplateBody=template_data)
+    ct.validate_template(TemplateBody=template_data)
     return template_data
 
 
@@ -96,7 +97,7 @@ def stack_updation():
     try:
         stack_updation_status = False
         cft_client = rds_client('cloudformation', 'rdsStack')
-        ct = boto3.client('cloudformation', STACK_REGION)
+        
         response = ct.get_template(
             StackName=STACK_NAME,
             TemplateStage='Original'

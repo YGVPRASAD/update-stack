@@ -122,7 +122,7 @@ def stack_updation():
                             {'ParameterKey': 'DBUsername', 'ParameterValue': DB_USERNAME}, {'ParameterKey': 'DBPassword', 'ParameterValue': DB_PASSWORD},
                             {'ParameterKey': 'DeletionProtection', 'ParameterValue': DELETE_PROTECTION}]
 
-        status = client.describe_stacks(
+        status = ct.describe_stacks(
                     StackName=STACK_NAME
             )
         stackstatus = status['Stacks'][0]['StackStatus']

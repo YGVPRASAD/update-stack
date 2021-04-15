@@ -96,9 +96,9 @@ def stack_updation():
     """
     try:
         stack_updation_status = False
-        cft_client = rds_client('cloudformation', 'rdsStack', region_name = ARGS.region)
+        cft_client = rds_client('cloudformation', 'rdsStack', STACK_REGION)
 
-        ct = boto3.client('cloudformation', region_name = ARGS.region)
+        ct = boto3.client('cloudformation', STACK_REGION)
         response = ct.get_template(
             StackName=STACK_NAME,
             TemplateStage='Original'

@@ -121,24 +121,11 @@ def stack_updation():
             cft_client.update_stack(StackName=STACK_NAME,
                                 TemplateBody=json_data, Parameters=stack_params)
             return True
-        else:
-            LOGGER.info('{} Stack does not exist'.format(STACK_NAME))
+        
     except botocore.exceptions.ClientError as ex:
         error_message = ex.response['Error']['Message']
-        if error_message == 'No updates are to be performed.':
-            LOGGER.info("No changes")
-            LOGGER.info("Updation of stack failed "+str(err))
-            stack_updation_status = False
-        else:
-            raise
-    #except Exception as err:
-        #error_message = err.response['Error']['Message']
-        #if error_message == 'No updates are to be performed.':
-            #LOGGER.info("No changes")
-            #LOGGER.info("Updation of stack failed "+str(err))
-            #stack_updation_status = False
-        #else:
-            #raise
+        LOGGER.info('{} Stack does not exist'.format(STACK_NAME))
+        raise
         
 def get_status():
     """

@@ -100,6 +100,7 @@ def stack_updation():
         stack_base_template = open("RDS-TEST.json")
         base_template = json.load(stack_base_template)
         json_data = json.dumps(base_template, indent=4)
+        ct = boto3.client('cloudformation', STACK_REGION)
 
         if ENHANCED_ROLE is not None:
             stack_params = [{'ParameterKey': 'DBInstanceID', 'ParameterValue': DB_INSTANCE_ID}, {'ParameterKey': 'DBName', 'ParameterValue': DB_NAME},
@@ -112,7 +113,7 @@ def stack_updation():
                             {'ParameterKey': 'DBUsername', 'ParameterValue': DB_USERNAME}, {'ParameterKey': 'DBPassword', 'ParameterValue': DB_PASSWORD},
                             {'ParameterKey': 'DeletionProtection', 'ParameterValue': DELETE_PROTECTION}]
 
-        status = client.describe_stacks(
+        status = ct.describe_stacks(
                     StackName=STACK_NAME
             )
         stackstatus = status['Stacks'][0]['StackStatus']

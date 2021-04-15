@@ -100,12 +100,6 @@ def stack_creation():
         base_template = json.load(stack_base_template)
         json_data = json.dumps(base_template, indent=4)
 
-         = environ['']
- = environ['']
- = environ['']
- = environ['']
-DELETE_PROTECTION = environ['DeletionProtection']
-
         if ENHANCED_ROLE is not None:
             stack_params = [{'ParameterKey': 'DBInstanceID', 'ParameterValue': DB_INSTANCE_ID}, {'ParameterKey': 'DBName', 'ParameterValue': DB_NAME},
                             {'ParameterKey': 'DBInstanceClass', 'ParameterValue': DB_INSTANCE_CLASS}, {'ParameterKey': 'DBAllocatedStorage', 'ParameterValue': DB_ALLOCATED_STORAGE},

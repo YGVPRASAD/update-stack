@@ -100,5 +100,20 @@
                 "MonitoringRoleArn": "arn:aws:iam::463423328685:role/rds-monitoring-role"
             }
         }
-    }
+    },
+    "Outputs": {
+		"DBAddress": {
+			"Description": "Address of Primary Database endpoint",
+			"Value": {
+				"Fn::GetAtt": ["MyDB", "Endpoint.Address"]
+			}
+		},
+		
+		"DatabasePort": {
+			"Description": "Database endpoint port number",
+			"Value": {
+				"Fn::GetAtt": ["MyDB", "Endpoint.Port"]
+			}
+		}
+	}
 }

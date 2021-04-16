@@ -139,13 +139,14 @@ def get_status():
             if stack_state == "CREATE_COMPLETE":
                 LOGGER.info("Stack "+STACK_NAME+" is created successfully")
                 stack_output = rds_stack.outputs
+                
+                LOGGER.info(stack_output)
                 LOGGER.info("The Following are the RDS Stack Outputs")
                 LOGGER.info("------------------------------------")
                 for output in stack_output:
                     rds_output = [output[k] for k in ['OutputKey', 'OutputValue']]
                     LOGGER.info(rds_output)
                 describe_stack = rds_stack.parameters
-                LOGGER.info(describe_stack)
                 with open(STACK_NAME+"-params.json", "w") as rds_param:
                     json.dump(describe_stack, rds_param, indent=4)
                 stack_creation_status = True

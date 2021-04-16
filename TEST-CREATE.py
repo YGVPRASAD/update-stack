@@ -145,6 +145,7 @@ def get_status():
                     rds_output = [output[k] for k in ['OutputKey', 'OutputValue']]
                     LOGGER.info(rds_output)
                 describe_stack = rds_stack.parameters
+                LOGGER.info(describe_stack)
                 with open(STACK_NAME+"-params.json", "w") as rds_param:
                     json.dump(describe_stack, rds_param, indent=4)
                 stack_creation_status = True

@@ -140,7 +140,7 @@ def get_status():
         while True:
             rds_stack = cft_resource.Stack(STACK_NAME)
             stack_state = rds_stack.stack_status
-            if stack_state == "CREATE_COMPLETE":
+            if stack_state == "UPDATE_COMPLETE":
                 LOGGER.info("Stack "+STACK_NAME+" is updated successfully")
                 stack_output = rds_stack.outputs
                 LOGGER.info("The Following are the RDS Stack Outputs")

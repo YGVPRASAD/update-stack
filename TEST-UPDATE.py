@@ -116,6 +116,7 @@ def stack_updation():
         status = ct.describe_stacks(
                     StackName=STACK_NAME
             )
+        LOGGER.info(status)
         stackstatus = status['Stacks'][0]['StackStatus']
         if stackstatus == 'CREATE_COMPLETE' or 'UPDATE_COMPLETE' or 'UPDATE_ROLLBACK_COMPLETE':
             cft_client.update_stack(StackName=STACK_NAME,

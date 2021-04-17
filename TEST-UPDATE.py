@@ -117,7 +117,7 @@ def stack_updation():
                     StackName=STACK_NAME
             )
         LOGGER.info(status)
-        temo = ct.get_template(
+        temp = ct.get_template(
                     StackName=STACK_NAME,
                     TemplateStage='Original'
             )

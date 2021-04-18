@@ -120,7 +120,16 @@ def stack_updation():
         key = status['Stacks'][0]['Parameters']
         ##['ParameterKey']
         LOGGER.info(key)
-        stackstatus = status['Stacks'][0]['StackStatus'][1]
+        item = 'DeletionProtection'
+        def search_value(name):
+            for keyval in key:
+                if name.lower() == keyval['ParameterKey'].lower():
+                    return keyval['ParameterValue']
+        if (search_value(item) != None):
+            print(search_value(item))
+        else:
+            print("Item is not found")
+        stackstatus = status['Stacks'][0]['StackStatus']
         if stackstatus == 'CREATE_COMPLETE' or 'UPDATE_COMPLETE' or 'UPDATE_ROLLBACK_COMPLETE':
             cft_client.update_stack(StackName=STACK_NAME,
                                 TemplateBody=json_data, Parameters=stack_params)

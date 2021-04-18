@@ -98,7 +98,7 @@ def main():
     try:
         stack_updation_status = False
         cft_client = rds_client('cloudformation', 'rdsStack')
-        stack_base_template = open("Create_SQL_RDS_CFT.json")
+        stack_base_template = open("RDS-TEST.json")
         base_template = json.load(stack_base_template)
         json_data = json.dumps(base_template, indent=4)
         

@@ -35,6 +35,8 @@ STACK_REGION = ARGS.region
 STACK_NAME = ARGS.stack_name
 ENHANCED_ROLE = ARGS.enhancedMonitorRoleARN
 
+DB_USERNAME = environ['DBUsername']
+DB_PASSWORD = environ['DBPassword']
 DELETE_PROTECTION = environ['DeletionProtection']
 
 def rds_client(resource_type, session_name):
@@ -104,9 +106,9 @@ def main():
         json_data = json.dumps(base_template, indent=4)
         
         if ENHANCED_ROLE is not None:
-            stack_params = [{'ParameterKey': 'DeletionProtection', 'ParameterValue': DELETE_PROTECTION}]
+            stack_params = [{'ParameterKey': 'DBUsername', 'ParameterValue': DB_USERNAME}, {'ParameterKey': 'DBPassword', 'ParameterValue': DB_PASSWORD}, {'ParameterKey': 'DeletionProtection', 'ParameterValue': DELETE_PROTECTION}]
         else:
-            stack_params = [{'ParameterKey': 'DeletionProtection', 'ParameterValue': DELETE_PROTECTION}]
+            stack_params = [{'ParameterKey': 'DBUsername', 'ParameterValue': DB_USERNAME}, {'ParameterKey': 'DBPassword', 'ParameterValue': DB_PASSWORD}, {'ParameterKey': 'DeletionProtection', 'ParameterValue': DELETE_PROTECTION}]
         LOGGER.info(stack_params)
         
 

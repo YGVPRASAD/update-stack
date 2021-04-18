@@ -81,6 +81,7 @@ def rds_resource(resource_type, session_name):
     return service_resource
 
 def _stack_exists(STACK_NAME):
+    client = boto3.client('cloudformation', region_name=STACK_REGION)
     stacks = client.list_stacks()['StackSummaries']
     for stack in stacks:
         if stack['StackStatus'] == 'DELETE_COMPLETE':

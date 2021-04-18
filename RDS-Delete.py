@@ -94,7 +94,7 @@ def main():
     """
     Main Function:
     """
-    
+    client = boto3.client('cloudformation', region_name=STACK_REGION)
     try:
         stack_updation_status = False
         cft_client = rds_client('cloudformation', 'rdsStack')
@@ -109,7 +109,7 @@ def main():
         LOGGER.info(stack_params)
         
 
-        status = ct.describe_stacks(                    
+        status = client.describe_stacks(                    
             StackName=STACK_NAME            
         )              
         key = status['Stacks'][0]['Parameters']   
@@ -142,8 +142,7 @@ def main():
     except botocore.exceptions.ClientError as ex:
         LOGGER.info('{} Stack does not exist'.format(STACK_NAME))
         raise
-
-    client = boto3.client('cloudformation', region_name=STACK_REGION)
+        
     ###delete stack###
     stack_name = args.name
     params = {

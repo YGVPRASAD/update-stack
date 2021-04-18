@@ -4,7 +4,7 @@ Author: Hitachi Vantara
 Contributor: Vara
 Date: 18-10-2021
 """
-
+​
 import json
 import argparse
 import sys
@@ -14,29 +14,29 @@ import logging
 import boto3
 import botocore
 from botocore.exceptions import ClientError
-
+​
 LOGGER = logging.getLogger(__name__)
 LOGFORMAT = "%(levelname)s: %(message)s"
 LOGGER = logging.getLogger("Update RDS CFT")
 LOGLEVEL = environ.get("logLevel", "INFO")
 logging.basicConfig(format=LOGFORMAT, level=LOGLEVEL)
 LOGGER.setLevel(logging.getLevelName(LOGLEVEL))
-
+​
 # read from cmd args
 PARSER = argparse.ArgumentParser(description="This Module is to update RDS")
-
+​
 PARSER.add_argument("-r", "--region", required=True)
 PARSER.add_argument("-s", "--stack_name", required=True)
 PARSER.add_argument("-e", "--enhancedMonitorRoleARN")
-
+​
 ARGS = PARSER.parse_args()
-
+​
 STACK_REGION = ARGS.region
 STACK_NAME = ARGS.stack_name
 ENHANCED_ROLE = ARGS.enhancedMonitorRoleARN
-
+​
 DELETE_PROTECTION = environ['DeletionProtection']
-
+​
 def rds_client(resource_type, session_name):
     """
     Function to get the aws credentials
@@ -57,8 +57,8 @@ def rds_client(resource_type, session_name):
     else:
         service_client = boto3.client(resource_type, STACK_REGION)
     return service_client
-
-
+​
+​
 def rds_resource(resource_type, session_name):
     """
     Function to get the aws credentials
@@ -79,17 +79,17 @@ def rds_resource(resource_type, session_name):
     else:
         service_resource = boto3.resource(resource_type, STACK_REGION)
     return service_resource
-
-def _stack_exists(stack_name):
+​
+def _stack_exists(STACK_NAME):
     stacks = client.list_stacks()['StackSummaries']
     for stack in stacks:
         if stack['StackStatus'] == 'DELETE_COMPLETE':
             continue
-        if stack_name == stack['StackName']:
+        if STACK_NAME == stack['StackName']:
             return True
     return False
-
-
+​
+​
 def main():
     """
     Main Function:
@@ -98,7 +98,7 @@ def main():
     try:
         stack_updation_status = False
         cft_client = rds_client('cloudformation', 'rdsStack')
-        stack_base_template = open("RDS-TEST.json")
+        stack_base_template = open("Create_SQL_RDS_CFT.json")
         base_template = json.load(stack_base_template)
         json_data = json.dumps(base_template, indent=4)
         
@@ -108,7 +108,7 @@ def main():
             stack_params = [{'ParameterKey': 'DeletionProtection', 'ParameterValue': DELETE_PROTECTION}]
         LOGGER.info(stack_params)
         
-
+​
         status = client.describe_stacks(                    
             StackName=STACK_NAME            
         )              
@@ -134,39 +134,36 @@ def main():
                 while (stackstatus == "UPDATE_IN_PROGRESS"):
                     LOGGER.info("UPDATE IN PROGRESS")
                     status = client.describe_stacks(
-                        StackName=stack_name
+                        StackName=STACK_NAME
                     )
                     stackstatus = status['Stacks'][0]['StackStatus']
-                LOGGER.info("Updated {}".format(stack_name))
+                LOGGER.info("Updated {}".format(STACK_NAME))
                 return True
     except botocore.exceptions.ClientError as ex:
         LOGGER.info('{} Stack does not exist'.format(STACK_NAME))
         raise
-        
+​
     ###delete stack###
-    stack_name = args.name
-    params = {
-        'StackName': stack_name,
-    }
-    if _stack_exists(stack_name):
-        LOGGER.info("Deleting {}".format(stack_name))
+    
+    if _stack_exists(STACK_NAME):
+        LOGGER.info("Deleting {}".format(STACK_NAME))
         response = client.delete_stack(
-            StackName=args.name
+            StackName=STACK_NAME
         )
         try:
             stackstatus = "DELETE_IN_PROGRESS"
             while (stackstatus == "DELETE_IN_PROGRESS"):
                 LOGGER.info("DELETE IN PROGRESS")
                 status = client.describe_stacks(
-                    StackName=stack_name
+                    StackName=STACK_NAME
                 )
                 stackstatus = status['Stacks'][0]['StackStatus']
         except ClientError as error:
-            LOGGER.info("Deleted {}".format(stack_name))  
+            LOGGER.info("Deleted {}".format(STACK_NAME))  
     else:
-        raise Exception("{} Stack Name does not exist".format(stack_name))
-
-
+        raise Exception("{} Stack Name does not exist".format(STACK_NAME))
+​
+​
 if __name__ == "__main__":
     STATUS = main()
     if not STATUS:

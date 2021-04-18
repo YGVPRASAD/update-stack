@@ -136,6 +136,7 @@ def main():
                 stackstatus = "UPDATE_IN_PROGRESS"
                 while (stackstatus == "UPDATE_IN_PROGRESS"):
                     LOGGER.info("UPDATE IN PROGRESS")
+                    time.sleep(300)
                     status = client.describe_stacks(
                         StackName=STACK_NAME
                     )
@@ -157,6 +158,7 @@ def main():
             stackstatus = "DELETE_IN_PROGRESS"
             while (stackstatus == "DELETE_IN_PROGRESS"):
                 LOGGER.info("DELETE IN PROGRESS")
+                time.sleep(300)
                 status = client.describe_stacks(
                     StackName=STACK_NAME
                 )

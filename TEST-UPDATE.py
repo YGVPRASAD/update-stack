@@ -2,7 +2,7 @@
 This Module is to update RDS Stack
 Author: Hitachi Vantara
 Contributor: Vara
-Date: 16-04-2021
+Date: 18-10-2021
 """
 
 import json
@@ -35,8 +35,29 @@ ARGS = PARSER.parse_args()
 STACK_REGION = ARGS.region
 STACK_NAME = ARGS.stack_name
 ENHANCED_ROLE = ARGS.enhancedMonitorRoleARN
+ct = boto3.client('cloudformation', STACK_REGION)
 
-DB_INSTANCE_ID = environ['DBInstanceID']
+status = ct.describe_stacks(                    
+            StackName=STACK_NAME            
+        )              
+key = status['Stacks'][0]['Parameters']   
+LOGGER.info(key)  
+def search_value(name):            
+    for keyval in key:                
+        if name.lower() == keyval['ParameterKey'].lower():                    
+            return keyval['ParameterValue'] 
+
+item = 'DBInstanceID'               
+if (search_value(item) != None):
+    LOGGER.info(search_value(item))
+    if (environ['DBInstanceID'] != None):
+        DB_INSTANCE_ID = environ['DBInstanceID']
+    else:
+        DB_INSTANCE_ID = search_value(item)
+else:            
+    LOGGER.info("Item is not found")        
+
+#DB_INSTANCE_ID = environ['DBInstanceID']
 DB_NAME = environ['DBName']
 DB_INSTANCE_CLASS = environ['DBInstanceClass']
 DB_ALLOCATED_STORAGE = environ['DBAllocatedStorage']
@@ -100,8 +121,7 @@ def stack_updation():
         stack_base_template = open("RDS-TEST.json")
         base_template = json.load(stack_base_template)
         json_data = json.dumps(base_template, indent=4)
-        ct = boto3.client('cloudformation', STACK_REGION)
-
+        
         if ENHANCED_ROLE is not None:
             stack_params = [{'ParameterKey': 'DBInstanceID', 'ParameterValue': DB_INSTANCE_ID}, {'ParameterKey': 'DBName', 'ParameterValue': DB_NAME},
                             {'ParameterKey': 'DBInstanceClass', 'ParameterValue': DB_INSTANCE_CLASS}, {'ParameterKey': 'DBAllocatedStorage', 'ParameterValue': DB_ALLOCATED_STORAGE},
@@ -113,27 +133,18 @@ def stack_updation():
                             {'ParameterKey': 'DBUsername', 'ParameterValue': DB_USERNAME}, {'ParameterKey': 'DBPassword', 'ParameterValue': DB_PASSWORD},
                             {'ParameterKey': 'DeletionProtection', 'ParameterValue': DELETE_PROTECTION}]
 
-        status = ct.describe_stacks(
-                    StackName=STACK_NAME
-            )
-        LOGGER.info(status)
-        temp = ct.get_template(
-                    StackName=STACK_NAME,
-                    TemplateStage='Original'
-            )
-        LOGGER.info(temp)
-        stackstatus = status['Stacks'][0]['StackStatus']
-        if stackstatus == 'CREATE_COMPLETE' or 'UPDATE_COMPLETE' or 'UPDATE_ROLLBACK_COMPLETE':
+        LOGGER.info(stack_params)
+        cftresource = rds_resource('cloudformation', 'rdsStack')
+        rdsstack = cftresource.Stack(STACK_NAME)
+        stackstatus = rdsstack.stack_status
+        if stackstatus == 'CREATE_COMPLETE' or 'UPDATE_COMPLETE':
             cft_client.update_stack(StackName=STACK_NAME,
                                 TemplateBody=json_data, Parameters=stack_params)
-            waiter = ct.get_waiter('stack_update_complete')
-            LOGGER.info('{} Stack Updated'.format(STACK_NAME))
             return True
-        
     except botocore.exceptions.ClientError as ex:
         LOGGER.info('{} Stack does not exist'.format(STACK_NAME))
         raise
-        
+    
 def get_status():
     """
     updateStack function.

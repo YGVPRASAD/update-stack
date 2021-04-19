@@ -47,12 +47,10 @@ def search_value(name):
         if name.lower() == keyval['ParameterKey'].lower():                    
             return keyval['ParameterValue'] 
 
-DB_INSTANCE_ID = environ['DBInstanceID']
-
 item = 'DBInstanceID'               
 if (search_value(item) != None):
     LOGGER.info(search_value(item))
-    if (DB_INSTANCE_ID == ""):
+    if (len(environ['DBInstanceID']) == 0):
         DB_INSTANCE_ID = search_value(item)
     else:
         DB_INSTANCE_ID = environ['DBInstanceID']

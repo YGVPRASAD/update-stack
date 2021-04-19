@@ -48,6 +48,7 @@ def search_value(name):
             return keyval['ParameterValue'] 
 
 DB_INSTANCE_ID = environ['DBInstanceID']
+LOGGER.info(DB_INSTANCE_ID)
 item = 'DBInstanceID'               
 if (search_value(item) != None):
     LOGGER.info(search_value(item))

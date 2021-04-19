@@ -50,10 +50,10 @@ def search_value(name):
 item = 'DBInstanceID'               
 if (search_value(item) != None):
     LOGGER.info(search_value(item))
-    if (environ['DBInstanceID'] != None):
-        DB_INSTANCE_ID = environ['DBInstanceID']
-    else:
+    if (environ['DBInstanceID'] == None):
         DB_INSTANCE_ID = search_value(item)
+    else:
+        DB_INSTANCE_ID = environ['DBInstanceID']
 else:            
     LOGGER.info("Item is not found")        
 

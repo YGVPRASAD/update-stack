@@ -50,7 +50,7 @@ def search_value(name):
 item = 'DBInstanceID'               
 if (search_value(item) != None):
     LOGGER.info(search_value(item))
-    if (environ['DBInstanceID'] == null):
+    if (environ['DBInstanceID'].isEmpty()):
         DB_INSTANCE_ID = search_value(item)
     else:
         DB_INSTANCE_ID = environ['DBInstanceID']

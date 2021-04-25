@@ -35,8 +35,26 @@ ARGS = PARSER.parse_args()
 STACK_REGION = ARGS.region
 STACK_NAME = ARGS.stack_name
 ENHANCED_ROLE = ARGS.enhancedMonitorRoleARN
+ct = boto3.client('cloudformation', STACK_REGION)
 
-DB_INSTANCE_ID = environ['DBInstanceID']
+status = ct.describe_stacks(                    
+            StackName=STACK_NAME            
+        )              
+key = status['Stacks'][0]['Parameters']   
+LOGGER.info(key)  
+def search_value(name):            
+    for keyval in key:                
+        if name.lower() == keyval['ParameterKey'].lower():                    
+            return keyval['ParameterValue'] 
+
+item1 = 'DBInstanceID'               
+if (search_value(item1) != None):
+    LOGGER.info(search_value(item1))
+    DB_INSTANCE_ID = search_value(item1)
+else:            
+    LOGGER.info("Item is not found")        
+
+#DB_INSTANCE_ID = environ['DBInstanceID']
 DB_NAME = environ['DBName']
 DB_INSTANCE_CLASS = environ['DBInstanceClass']
 DB_ALLOCATED_STORAGE = environ['DBAllocatedStorage']

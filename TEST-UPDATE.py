@@ -58,6 +58,21 @@ else:
 DB_NAME = environ['DBName']
 DB_INSTANCE_CLASS = environ['DBInstanceClass']
 DB_ALLOCATED_STORAGE = environ['DBAllocatedStorage']
+DB_VERSION = environ['DBEngineVersion']
+OLD_DB_VERSION = 'DBEngineVersion'
+if (search_value(OLD_DB_VERSION) != None):
+    LOGGER.info(search_value(OLD_DB_VERSION))
+    #DB_VERSION = search_value(OLD_DB_VERSION)
+    DB_VERSION = [ str(x) for x in DB_VERSION.split(".") ]
+    OLD_DB_VERSION = [ str(x) for x in search_value(OLD_DB_VERSION).split(".") ]
+    if (DB_VERSION >= OLD_DB_VERSION):
+	    DB_VERSION = environ['DBEngineVersion']
+    else:
+	    raise
+else:
+    LOGGER.info("Item is not found")
+
+DB_ENG_TYPE = environ['DBEnginetype']
 DB_USERNAME = environ['DBUsername']
 DB_PASSWORD = environ['DBPassword']
 DELETE_PROTECTION = environ['DeletionProtection']
@@ -122,12 +137,12 @@ def stack_updation():
         if ENHANCED_ROLE is not None:
             stack_params = [{'ParameterKey': 'DBInstanceID', 'ParameterValue': DB_INSTANCE_ID}, {'ParameterKey': 'DBName', 'ParameterValue': DB_NAME},
                             {'ParameterKey': 'DBInstanceClass', 'ParameterValue': DB_INSTANCE_CLASS}, {'ParameterKey': 'DBAllocatedStorage', 'ParameterValue': DB_ALLOCATED_STORAGE},
-                            {'ParameterKey': 'DBUsername', 'ParameterValue': DB_USERNAME}, {'ParameterKey': 'DBPassword', 'ParameterValue': DB_PASSWORD},
+                            {'ParameterKey': 'DBEngineVersion', 'ParameterValue': DB_VERSION}, {'ParameterKey': 'DBEnginetype', 'ParameterValue': DB_ENG_TYPE}, {'ParameterKey': 'DBUsername', 'ParameterValue': DB_USERNAME}, {'ParameterKey': 'DBPassword', 'ParameterValue': DB_PASSWORD},
                             {'ParameterKey': 'DeletionProtection', 'ParameterValue': DELETE_PROTECTION}]
         else:
             stack_params = [{'ParameterKey': 'DBInstanceID', 'ParameterValue': DB_INSTANCE_ID}, {'ParameterKey': 'DBName', 'ParameterValue': DB_NAME},
                             {'ParameterKey': 'DBInstanceClass', 'ParameterValue': DB_INSTANCE_CLASS}, {'ParameterKey': 'DBAllocatedStorage', 'ParameterValue': DB_ALLOCATED_STORAGE},
-                            {'ParameterKey': 'DBUsername', 'ParameterValue': DB_USERNAME}, {'ParameterKey': 'DBPassword', 'ParameterValue': DB_PASSWORD},
+                            {'ParameterKey': 'DBEngineVersion', 'ParameterValue': DB_VERSION}, {'ParameterKey': 'DBEnginetype', 'ParameterValue': DB_ENG_TYPE}, {'ParameterKey': 'DBUsername', 'ParameterValue': DB_USERNAME}, {'ParameterKey': 'DBPassword', 'ParameterValue': DB_PASSWORD},
                             {'ParameterKey': 'DeletionProtection', 'ParameterValue': DELETE_PROTECTION}]
 
         LOGGER.info(stack_params)

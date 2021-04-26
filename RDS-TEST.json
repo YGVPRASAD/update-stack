@@ -37,6 +37,18 @@
 
             "ConstraintDescription": "must be between 20 and 65536 GiB."
         },
+	"DBEngineVersion": {
+	    "Description": "The version number of the database engine",
+	    "Type": "String",
+	    "Default": "15.00.4043.16.v1",
+	    "AllowedValues": ["15.00.4043.16.v1"]
+	},
+	"DBEnginetype": {
+	    "Description": "The engine type of the database engine",
+	    "Type": "String",
+	    "Default": "sqlserver-ee",
+	    "AllowedValues": ["sqlserver-ee", "sqlserver-se", "sqlserver-web"]
+	},
         "DBUsername": {
             "NoEcho": "true",
             "Description": "Username for MySQL database access",
@@ -83,10 +95,13 @@
                 "AllocatedStorage": {
                     "Ref": "DBAllocatedStorage"
                 },
-                "Engine": "MySQL",
-                "EngineVersion": "8.0.16",
+                "Engine": {
+		    "Ref": "DBEnginetype"
+		},
+		"EngineVersion": {
+		    "Ref": "DBEngineVersion"
+		},
                 "MasterUsername": {
-
                     "Ref": "DBUsername"
                 },
                 "MasterUserPassword": {

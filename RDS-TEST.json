@@ -95,6 +95,7 @@
                 "AllocatedStorage": {
                     "Ref": "DBAllocatedStorage"
                 },
+		"LicenseModel": "license-included",
                 "Engine": {
 		    "Ref": "DBEnginetype"
 		},

@@ -27,6 +27,11 @@
             "Description": "DB instance class",
             "Type": "String",
             "ConstraintDescription": "Must select a valid DB instance type."
+	    "AllowedValues": [
+			"db.m5.large",
+			"db.t3.small"
+	    ]
+		
         },
         "DBAllocatedStorage": {
             "Default": "50",

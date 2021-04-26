@@ -22,16 +22,11 @@
             "ConstraintDescription": "Must begin with a letter and contain only alphanumeric characters."
         },
         "DBInstanceClass": {
-            "Default": "db.t3.xlarge",
+            "Default": "db.t3.small",
 
             "Description": "DB instance class",
             "Type": "String",
-            "ConstraintDescription": "Must select a valid DB instance type.",
-	    "AllowedValues": [
-			"db.m5.large",
-			"db.t3.small"
-	    ]
-		
+            "ConstraintDescription": "Must select a valid DB instance type."	
         },
         "DBAllocatedStorage": {
             "Default": "50",

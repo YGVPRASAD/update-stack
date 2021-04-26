@@ -39,6 +39,8 @@ DB_INSTANCE_ID = environ['DBInstanceID']
 DB_NAME = environ['DBName']
 DB_INSTANCE_CLASS = environ['DBInstanceClass']
 DB_ALLOCATED_STORAGE = environ['DBAllocatedStorage']
+DB_VERSION = environ['DBEngineVersion']
+DB_ENG_TYPE = environ['DBEnginetype']
 DB_USERNAME = environ['DBUsername']
 DB_PASSWORD = environ['DBPassword']
 DELETE_PROTECTION = environ['DeletionProtection']
@@ -103,12 +105,12 @@ def stack_creation():
         if ENHANCED_ROLE is not None:
             stack_params = [{'ParameterKey': 'DBInstanceID', 'ParameterValue': DB_INSTANCE_ID}, {'ParameterKey': 'DBName', 'ParameterValue': DB_NAME},
                             {'ParameterKey': 'DBInstanceClass', 'ParameterValue': DB_INSTANCE_CLASS}, {'ParameterKey': 'DBAllocatedStorage', 'ParameterValue': DB_ALLOCATED_STORAGE},
-                            {'ParameterKey': 'DBUsername', 'ParameterValue': DB_USERNAME}, {'ParameterKey': 'DBPassword', 'ParameterValue': DB_PASSWORD},
+                            {'ParameterKey': 'DBEngineVersion', 'ParameterValue': DB_VERSION}, {'ParameterKey': 'DBEnginetype', 'ParameterValue': DB_ENG_TYPE}, {'ParameterKey': 'DBUsername', 'ParameterValue': DB_USERNAME}, {'ParameterKey': 'DBPassword', 'ParameterValue': DB_PASSWORD},
                             {'ParameterKey': 'DeletionProtection', 'ParameterValue': DELETE_PROTECTION}]
         else:
             stack_params = [{'ParameterKey': 'DBInstanceID', 'ParameterValue': DB_INSTANCE_ID}, {'ParameterKey': 'DBName', 'ParameterValue': DB_NAME},
                             {'ParameterKey': 'DBInstanceClass', 'ParameterValue': DB_INSTANCE_CLASS}, {'ParameterKey': 'DBAllocatedStorage', 'ParameterValue': DB_ALLOCATED_STORAGE},
-                            {'ParameterKey': 'DBUsername', 'ParameterValue': DB_USERNAME}, {'ParameterKey': 'DBPassword', 'ParameterValue': DB_PASSWORD},
+                            {'ParameterKey': 'DBEngineVersion', 'ParameterValue': DB_VERSION}, {'ParameterKey': 'DBEnginetype', 'ParameterValue': DB_ENG_TYPE}, {'ParameterKey': 'DBUsername', 'ParameterValue': DB_USERNAME}, {'ParameterKey': 'DBPassword', 'ParameterValue': DB_PASSWORD},
                             {'ParameterKey': 'DeletionProtection', 'ParameterValue': DELETE_PROTECTION}]
 
         cft_client.create_stack(StackName=STACK_NAME,
